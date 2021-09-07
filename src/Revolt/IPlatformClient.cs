@@ -8,13 +8,15 @@ namespace Revolt
     {
         #region Core
 
-        Task<Node> QueryNodeAsync(CancellationToken cancellationToken);
+        Task<Node> QueryNodeAsync(CancellationToken cancellationToken = default);
 
         #endregion
 
         #region Onboarding
 
-        Task<bool> CheckOnboardingStatusAsync(CancellationToken cancellationToken);
+        Task<bool> CheckOnboardingStatusAsync(CancellationToken cancellationToken = default);
+
+        Task CompleteOnboarding(string username, CancellationToken cancellationToken = default);
 
         #endregion
     }
