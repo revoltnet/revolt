@@ -2,6 +2,15 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Title>Revolt</Title>
+        <Authors>Lucas Maximiliano Marino</Authors>
+        <Description>Client and wrapper for Revolt API. Build apps, bots and more!</Description>
+        <PackageProjectUrl>https://github.com/elementh/noa</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/elementh/noa</RepositoryUrl>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageLicenseExpression>AGPL-3.0-only</PackageLicenseExpression>
+        <Copyright>Copyright © Lucas Maximiliano Marino 2021</Copyright>
     </PropertyGroup>
 
 </Project>
