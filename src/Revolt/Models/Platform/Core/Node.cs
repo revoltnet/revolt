@@ -1,4 +1,4 @@
-namespace Revolt.Models
+namespace Revolt.Models.Platform.Core
 {
     /// <summary>
     ///     Information about which features are enabled on the remote node.
