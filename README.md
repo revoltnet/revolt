@@ -1,5 +1,14 @@
 # revolt
+
+[![Nuget](https://img.shields.io/nuget/v/Revolt)](https://nuget.org)
+
 .NET client and wrapper for Revolt API. Build apps, bots and more!
+
+## Examples
+
+
+
+TODO
 
 ## 
 
