@@ -6,8 +6,8 @@
         <Title>Revolt</Title>
         <Authors>Lucas Maximiliano Marino</Authors>
         <Description>Client and wrapper for Revolt API. Build apps, bots and more!</Description>
-        <PackageProjectUrl>https://github.com/elementh/noa</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/elementh/noa</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/revoltnet</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/revoltnet/revolt</RepositoryUrl>
         <PackageIconUrl>https://github.com/revoltchat/documentation/blob/b5234cfd778b3f81f37422867d4b4c2241ac23c3/static/img/logo.png</PackageIconUrl>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <PackageLicenseExpression>AGPL-3.0-only</PackageLicenseExpression>
