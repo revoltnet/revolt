@@ -1,6 +1,6 @@
 # revolt
 
-[![Nuget](https://img.shields.io/nuget/v/Revolt)](https://nuget.org)
+[![Nuget](https://img.shields.io/nuget/v/Revolt)](https://www.nuget.org/packages/Revolt)
 
 .NET client and wrapper for Revolt API. Build apps, bots and more!
 
