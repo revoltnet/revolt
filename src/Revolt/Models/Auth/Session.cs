@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 #nullable enable
 namespace Revolt.Models.Auth
 {
@@ -9,21 +11,25 @@ namespace Revolt.Models.Auth
         /// <summary>
         /// Session ID.
         /// </summary>
-        public string Id { get; set; } = null!;
+        [JsonPropertyName("id")]
+        public string Id { get; } = null!;
 
         /// <summary>
         /// User ID. Optional.
         /// </summary>
+        [JsonPropertyName("user_id")]
         public string? UserId { get; set; }
 
         /// <summary>
         /// Session Token. Optional.
         /// </summary>
+        [JsonPropertyName("session_token")]
         public string? SessionToken { get; set; }
 
         /// <summary>
         /// Session device name.
         /// </summary>
-        public string FriendlyName { get; set; } = null!;
+        [JsonPropertyName("friendly_name")]
+        public string? FriendlyName { get; set; }
     }
 }
