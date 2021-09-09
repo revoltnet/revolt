@@ -206,6 +206,27 @@ namespace Revolt
                 throw new RevoltException(response.ReasonPhrase, e);
             }
         }
+
+        /// <inheritdoc />
+        public async Task PasswordResetAsync(string newPassword, string token, CancellationToken cancellationToken = default)
+        {
+            var payload = GeneratePayload(new
+            {
+                password = newPassword,
+                token
+            });
+
+            var response = await Client.PostAsync("auth/reset", payload, cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+        }
         /// <summary>
         /// Generates a valid <see cref="StringContent"/> payload.
         /// </summary>
