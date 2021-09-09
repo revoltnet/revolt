@@ -185,6 +185,27 @@ namespace Revolt
 
             return session ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
+
+        /// <inheritdoc />
+        public async Task SendPasswordResetAsync(string email, string captcha, CancellationToken cancellationToken = default)
+        {
+            var payload = GeneratePayload(new
+            {
+                email,
+                captcha
+            });
+
+            var response = await Client.PostAsync("auth/send_reset", payload, cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+        }
         /// <summary>
         /// Generates a valid <see cref="StringContent"/> payload.
         /// </summary>
