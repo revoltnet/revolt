@@ -159,6 +159,32 @@ namespace Revolt
             }
         }
 
+        /// <inheritdoc />
+        public async Task<Session> LoginAsync(string email, string password, string deviceName, string captcha, CancellationToken cancellationToken = default)
+        {
+            var payload = GeneratePayload(new
+            {
+                email,
+                password,
+                device_name = deviceName,
+                captcha
+            });
+
+            var response = await Client.PostAsync("auth/login", payload, cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+
+            var session = await response.Content.ReadFromJsonAsync<Session>(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            return session ?? throw new RevoltException("Something went wrong deserializing the response.");
+        }
         /// <summary>
         /// Generates a valid <see cref="StringContent"/> payload.
         /// </summary>
