@@ -3,7 +3,7 @@ namespace Revolt
     /// <summary>
     /// Fully featured Revolt client.
     /// </summary>
-    public interface IRevoltClient : IPlatformClient
+    public interface IRevoltClient : IPlatformClient, IAuthClient
     {
         
     }
