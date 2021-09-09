@@ -305,7 +305,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task DeleteSession(string sessionId, CancellationToken cancellationToken = default)
+        public async Task DeleteSessionAsync(string sessionId, CancellationToken cancellationToken = default)
         {
             var response = await Client.DeleteAsync($"auth/session/{sessionId}", cancellationToken).ConfigureAwait(false);
 
@@ -320,7 +320,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<Session>> FetchSessions(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Session>> FetchSessionsAsync(CancellationToken cancellationToken = default)
         {
             
             var response = await Client.GetAsync("auth/sessions", cancellationToken).ConfigureAwait(false);
@@ -340,7 +340,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task Logout(CancellationToken cancellationToken)
+        public async Task LogoutAsync(CancellationToken cancellationToken)
         {
             var response = await Client.GetAsync($"auth/logout", cancellationToken).ConfigureAwait(false);
 

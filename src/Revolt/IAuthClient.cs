@@ -97,20 +97,20 @@ namespace Revolt
         /// <param name="sessionId">Session id.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
         /// <returns></returns>
-        public Task DeleteSession(string sessionId, CancellationToken cancellationToken = default);
+        public Task DeleteSessionAsync(string sessionId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Fetch all sessions.
         /// </summary>
         /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
         /// <returns>A collection of <see cref="Session"/>.</returns>
-        public Task<IEnumerable<Session>> FetchSessions(CancellationToken cancellationToken = default);
+        public Task<IEnumerable<Session>> FetchSessionsAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Delete current session.
         /// </summary>
         /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
         /// <returns></returns>
-        public Task Logout(CancellationToken cancellationToken);
+        public Task LogoutAsync(CancellationToken cancellationToken);
     }
 }
