@@ -227,6 +227,25 @@ namespace Revolt
                 throw new RevoltException(response.ReasonPhrase, e);
             }
         }
+
+        /// <inheritdoc />
+        public async Task<Account> FetchAccountAsync(CancellationToken cancellationToken = default)
+        {
+            var response = await Client.GetAsync("auth/user", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+
+            var account = await response.Content.ReadFromJsonAsync<Account>(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            return account ?? throw new RevoltException("Something went wrong deserializing the response.");
+        }
         /// <summary>
         /// Generates a valid <see cref="StringContent"/> payload.
         /// </summary>
