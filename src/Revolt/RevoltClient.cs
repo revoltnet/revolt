@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -9,6 +10,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using Revolt.Models.Auth;
 using Revolt.Models.Platform.Core;
 using Revolt.Options;
 
@@ -103,6 +105,38 @@ namespace Revolt
         #endregion
 
         #region IAuthClient
+
+        /// <inheritdoc />
+        public async Task<string> CreateAccountAsync(string email, string password, string invite, string captcha, CancellationToken cancellationToken = default)
+        {
+            var payload = GeneratePayload(new
+            {
+                email,
+                password,
+                invite,
+                captcha
+            });
+
+            var response = await Client.PostAsync("auth/create", payload, cancellationToken);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+
+            var content = await response.Content.ReadFromJsonAsync<JsonElement>(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            if (content.TryGetProperty("user_id", out content))
+            {
+                return content.GetString() ?? throw new RevoltException("Something went wrong deserializing the response.");
+            }
+
+            throw new RevoltException("Something went wrong deserializing the response.");
+        }
         /// <summary>
         /// Generates a valid <see cref="StringContent"/> payload.
         /// </summary>
