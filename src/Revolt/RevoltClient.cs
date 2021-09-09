@@ -283,6 +283,27 @@ namespace Revolt
             }
         }
 
+        /// <inheritdoc />
+        public async Task ChangeEmailAsync(string password, string newEmail, CancellationToken cancellationToken = default)
+        {
+            var payload = GeneratePayload(new
+            {
+                password,
+                new_email = newEmail
+            });
+
+            var response = await Client.PostAsync("auth/change/email", payload, cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+        }
+
         /// <summary>
         /// Generates a valid <see cref="StringContent"/> payload.
         /// </summary>
