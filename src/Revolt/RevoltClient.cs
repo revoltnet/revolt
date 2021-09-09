@@ -35,6 +35,8 @@ namespace Revolt
             Client.BaseAddress = Options.Endpoint;
         }
 
+        #region IPLatformClient
+
         /// <inheritdoc />
         public async Task<Node> QueryNodeAsync(CancellationToken cancellationToken = default)
         {
@@ -97,6 +99,8 @@ namespace Revolt
                 throw new RevoltException(response.ReasonPhrase, e);
             }
         }
+
+        #endregion
 
         private static StringContent GeneratePayload<T>(T payload)
         {
