@@ -102,7 +102,14 @@ namespace Revolt
 
         #endregion
 
-        private static StringContent GeneratePayload<T>(T payload)
+        #region IAuthClient
+        /// <summary>
+        /// Generates a valid <see cref="StringContent"/> payload.
+        /// </summary>
+        /// <param name="payload">The object for the body of the payload.</param>
+        /// <typeparam name="T">A valid object.</typeparam>
+        /// <returns>A valid <see cref="StringContent"/>.</returns>
+        protected static StringContent GeneratePayload<T>(T payload)
         {
             return new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
         }
