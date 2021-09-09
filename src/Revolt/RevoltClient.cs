@@ -338,6 +338,24 @@ namespace Revolt
 
             return sessions ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
+
+        /// <inheritdoc />
+        public async Task Logout(CancellationToken cancellationToken)
+        {
+            var response = await Client.GetAsync($"auth/logout", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Generates a valid <see cref="StringContent"/> payload.
         /// </summary>
