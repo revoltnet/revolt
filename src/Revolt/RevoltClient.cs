@@ -319,6 +319,25 @@ namespace Revolt
             }
         }
 
+        /// <inheritdoc />
+        public async Task<IEnumerable<Session>> FetchSessions(CancellationToken cancellationToken = default)
+        {
+            
+            var response = await Client.GetAsync("auth/sessions", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+
+            var sessions = await response.Content.ReadFromJsonAsync<IEnumerable<Session>>(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            return sessions ?? throw new RevoltException("Something went wrong deserializing the response.");
+        }
         /// <summary>
         /// Generates a valid <see cref="StringContent"/> payload.
         /// </summary>
