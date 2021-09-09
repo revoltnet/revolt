@@ -90,7 +90,7 @@ namespace Revolt
                 username
             });
 
-            var response = await Client.PostAsync("onboard/complete", payload, cancellationToken);
+            var response = await Client.PostAsync("onboard/complete", payload, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -117,7 +117,7 @@ namespace Revolt
                 captcha
             });
 
-            var response = await Client.PostAsync("auth/create", payload, cancellationToken);
+            var response = await Client.PostAsync("auth/create", payload, cancellationToken).ConfigureAwait(false);
 
             try
             {
