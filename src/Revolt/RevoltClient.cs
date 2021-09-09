@@ -262,6 +262,27 @@ namespace Revolt
             }
         }
 
+        /// <inheritdoc />
+        public async Task ChangePasswordAsync(string oldPassword, string newPassword, CancellationToken cancellationToken = default)
+        {
+            var payload = GeneratePayload(new
+            {
+                password = oldPassword,
+                new_password = newPassword
+            });
+
+            var response = await Client.PostAsync("auth/change/password", payload, cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+        }
+
         /// <summary>
         /// Generates a valid <see cref="StringContent"/> payload.
         /// </summary>
