@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Revolt.Models.Auth
 {
     public class Account
@@ -5,11 +7,13 @@ namespace Revolt.Models.Auth
         /// <summary>
         /// User ID.
         /// </summary>
-        public string Id { get; set; }
+        [JsonPropertyName("id")]
+        public string Id { get; }
         
         /// <summary>
         /// User Email.
         /// </summary>
-        public string Email { get; set; }
+        [JsonPropertyName("email")]
+        public string Email { get; }
     }
 }
