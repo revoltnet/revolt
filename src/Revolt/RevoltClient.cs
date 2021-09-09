@@ -304,6 +304,21 @@ namespace Revolt
             }
         }
 
+        /// <inheritdoc />
+        public async Task DeleteSession(string sessionId, CancellationToken cancellationToken = default)
+        {
+            var response = await Client.DeleteAsync($"auth/session/{sessionId}", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+        }
+
         /// <summary>
         /// Generates a valid <see cref="StringContent"/> payload.
         /// </summary>
