@@ -1,3 +1,4 @@
+#nullable enable
 using System.Text.Json.Serialization;
 
 namespace Revolt.Models.Users.Information
@@ -5,7 +6,7 @@ namespace Revolt.Models.Users.Information
     /// <summary>
     /// User status.
     /// </summary>
-    public class UserStatus
+    public class Status
     {
         /// <summary>
         /// User's custom status text.

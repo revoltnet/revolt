@@ -370,7 +370,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task EditUser(UserStatus status, Profile profile, string avatarId, ERemovableInformation remove,
+        public async Task EditUser(Status status, Profile profile, string avatarId, ERemovableInformation remove,
             CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
@@ -424,37 +424,37 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task<UserStatus> SendFriendRequest(string username, CancellationToken cancellationToken = default)
+        public async Task<Status> SendFriendRequest(string username, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<UserStatus> AcceptFriendRequest(string username, CancellationToken cancellationToken = default)
+        public async Task<Status> AcceptFriendRequest(string username, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<UserStatus> DenyFriendRequest(string username, CancellationToken cancellationToken = default)
+        public async Task<Status> DenyFriendRequest(string username, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<UserStatus> RemoveFriend(string username, CancellationToken cancellationToken = default)
+        public async Task<Status> RemoveFriend(string username, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<UserStatus> BlockUser(string userId, CancellationToken cancellationToken = default)
+        public async Task<Status> BlockUser(string userId, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<UserStatus> UnblockUser(string userId, CancellationToken cancellationToken = default)
+        public async Task<Status> UnblockUser(string userId, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

@@ -48,7 +48,7 @@ namespace Revolt.Models.Users.Information
         /// User status.
         /// </summary>
         [JsonPropertyName("status")]
-        public UserStatus? Status { get; init; }
+        public Status? Status { get; init; }
 
         /// <summary>
         /// Your relationship with the user.
