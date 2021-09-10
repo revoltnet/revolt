@@ -56,7 +56,7 @@ namespace Revolt
         /// <param name="userId">User id.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
         /// <returns>Default avatar in PNG format.</returns>
-        Task<MemoryStream> FetchDefaultAvatar(string userId, CancellationToken cancellationToken = default);
+        Task<Stream> FetchDefaultAvatar(string userId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieve a list of mutual friends with another user.

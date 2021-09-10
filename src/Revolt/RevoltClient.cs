@@ -444,9 +444,22 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task<MemoryStream> FetchDefaultAvatar(string userId, CancellationToken cancellationToken = default)
+        public async Task<Stream> FetchDefaultAvatar(string userId, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var response = await Client.GetAsync($"users/{userId}/default_avatar", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+
+            var profile = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+
+            return profile ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         public async Task<IEnumerable<string>> FetchMutualFriends(string userId, CancellationToken cancellationToken = default)
