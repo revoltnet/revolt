@@ -1,31 +1,139 @@
+#nullable enable
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Revolt.Models.Common;
 using Revolt.Models.Users.Relationships;
 
 namespace Revolt.Models.Users.Information
 {
+    /// <summary>
+    /// User.
+    /// </summary>
     public class User
     {
-        public string Id { get; set; }
-        public string Username { get; set; }
-        public File Avatar { get; set; }
-        public List<Relation> Relations { get; set; }
-        public long Badges { get; set; }
-        public UserStatus Status { get; set; }
-        public ERelationship Relationship { get; set; }
-        public bool Online { get; set; }
-        public long Flags { get; set; }
-        public BotInformation Bot { get; set; }
+        /// <summary>
+        /// User id.
+        /// </summary>
+        [JsonPropertyName("_id")]
+        public string Id { get; init; } = null!;
 
+        /// <summary>
+        /// Username.
+        /// </summary>
+        [JsonPropertyName("username")]
+        public string Username { get; init; } = null!;
+        
+        /// <summary>
+        /// User avatar.
+        /// </summary>
+        [JsonPropertyName("avatar")]
+        public File? Avatar { get; init; }
+        
+        /// <summary>
+        /// Relationships with other known users.
+        /// </summary>
+        /// <remarks>
+        /// Only present if fetching self.
+        /// </remarks>
+        [JsonPropertyName("relations")]
+        public List<Relation>? Relations { get; init; }
+        
+        /// <summary>
+        /// Bitfield of user's badges.
+        /// </summary>
+        [JsonPropertyName("badges")]
+        public long? Badges { get; init; }
+        
+        /// <summary>
+        /// User status.
+        /// </summary>
+        [JsonPropertyName("status")]
+        public UserStatus? Status { get; init; }
+
+        /// <summary>
+        /// Your relationship with the user.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to none.
+        /// </remarks>
+        [JsonPropertyName("relationship")]
+        public ERelationship Relationship { get; init; } = ERelationship.None;
+        
+        /// <summary>
+        /// Whether the user is online.
+        /// </summary>
+        [JsonPropertyName("online")]
+        public bool Online { get; init; }
+        
+        /// <summary>
+        /// User flags.
+        /// </summary>
+        [JsonPropertyName("flags")]
+        public long? Flags { get; init; }
+        
+        /// <summary>
+        /// Bot information.
+        /// </summary>
+        /// <remarks>
+        /// Only present if fetching a bot, or self is a bot.
+        /// </remarks>
+        [JsonPropertyName("bot")]
+        public BotInformation? Bot { get; init; }
+
+        /// <summary>
+        /// Bot information.
+        /// </summary>
         public class BotInformation
         {
-            public string Owner { get; set; }
+            /// <summary>
+            /// The user id of the owner of the bot.
+            /// </summary>
+            [JsonPropertyName("owner")]
+            public string Owner { get; init; } = null!;
         }
 
+        /// <summary>
+        /// User status.
+        /// </summary>
         public class UserStatus
         {
-            public string Text { get; set; }
-            public string Presence { get; set; }
+            /// <summary>
+            /// User's custom status text.
+            /// </summary>
+            [JsonPropertyName("text")]
+            public string? Text { get; init; }
+            
+            /// <summary>
+            /// User presence.
+            /// </summary>
+            [JsonPropertyName("presence")]
+            public EPresence? Presence { get; init; }
+
+            /// <summary>
+            /// Possible user presences.
+            /// </summary>
+            public enum EPresence
+            {
+                /// <summary>
+                /// Busy.
+                /// </summary>
+                Busy,
+                
+                /// <summary>
+                /// Idle.
+                /// </summary>
+                Idle,
+                
+                /// <summary>
+                /// Invisible.
+                /// </summary>
+                Invisible,
+                
+                /// <summary>
+                /// Online.
+                /// </summary>
+                Online
+            }
         }
     }
 }
