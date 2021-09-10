@@ -5,7 +5,7 @@ namespace Revolt.Models.Users.Relationships
     /// <summary>
     /// Represents a relationship with a user.
     /// </summary>
-    public class Relation
+    public class Relationship
     {
         /// <summary>
         /// Your relationship with the user.
