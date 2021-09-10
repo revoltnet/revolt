@@ -374,9 +374,9 @@ namespace Revolt
                 throw new RevoltException(response.ReasonPhrase, e);
             }
 
-            var sessions = await response.Content.ReadFromJsonAsync<User>(cancellationToken: cancellationToken).ConfigureAwait(false);
+            var user = await response.Content.ReadFromJsonAsync<User>(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            return sessions ?? throw new RevoltException("Something went wrong deserializing the response.");
+            return user ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
@@ -427,7 +427,20 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<Profile> FetchUserProfile(string userId, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var response = await Client.GetAsync($"users/{userId}/profile", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+
+            var profile = await response.Content.ReadFromJsonAsync<Profile>(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            return profile ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
