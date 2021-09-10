@@ -327,7 +327,6 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<IEnumerable<Session>> FetchSessionsAsync(CancellationToken cancellationToken = default)
         {
-            
             var response = await Client.GetAsync("auth/sessions", cancellationToken).ConfigureAwait(false);
 
             try
