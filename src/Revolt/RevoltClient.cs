@@ -509,13 +509,39 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<IEnumerable<Relationship>> FetchAllRelationships(CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var response = await Client.GetAsync("users/relationships", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+
+            var relationships = await response.Content.ReadFromJsonAsync<IEnumerable<Relationship>>(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            return relationships ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
-        public async Task<Relationship> FetchRelationship(CancellationToken cancellationToken = default)
+        public async Task<Relationship> FetchRelationship(string userId, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var response = await Client.GetAsync($"users/{userId}/relationships", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+
+            var relationship = await response.Content.ReadFromJsonAsync<Relationship>(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            return relationship ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />

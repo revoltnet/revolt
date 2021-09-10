@@ -99,9 +99,10 @@ namespace Revolt
         /// <summary>
         /// Fetch your relationship with another other user.
         /// </summary>
+        /// <param name="userId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>An instance of <see cref="Relationship"/>.</returns>
-        Task<Relationship> FetchRelationship(CancellationToken cancellationToken = default);
+        Task<Relationship> FetchRelationship(string userId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Send a friend request to another user.
