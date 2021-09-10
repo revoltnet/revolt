@@ -30,7 +30,7 @@ namespace Revolt
         /// <param name="remove">Field to remove from user object.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task EditUser(User.UserStatus status, Profile profile, string avatarId, ERemovableInformation remove, CancellationToken cancellationToken = default);
+        Task EditUser(UserStatus status, Profile profile, string avatarId, ERemovableInformation remove, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Change your username.
@@ -86,17 +86,17 @@ namespace Revolt
 
         Task<Relationship> FetchRelationship(CancellationToken cancellationToken = default);
 
-        Task<User.UserStatus> SendFriendRequest(string username, CancellationToken cancellationToken = default);
+        Task<UserStatus> SendFriendRequest(string username, CancellationToken cancellationToken = default);
         
-        Task<User.UserStatus> AcceptFriendRequest(string username, CancellationToken cancellationToken = default);
+        Task<UserStatus> AcceptFriendRequest(string username, CancellationToken cancellationToken = default);
 
-        Task<User.UserStatus> DenyFriendRequest(string username, CancellationToken cancellationToken = default);
+        Task<UserStatus> DenyFriendRequest(string username, CancellationToken cancellationToken = default);
 
-        Task<User.UserStatus> RemoveFriend(string username, CancellationToken cancellationToken = default);
+        Task<UserStatus> RemoveFriend(string username, CancellationToken cancellationToken = default);
         
-        Task<User.UserStatus> BlockUser(string userId, CancellationToken cancellationToken = default);
+        Task<UserStatus> BlockUser(string userId, CancellationToken cancellationToken = default);
         
-        Task<User.UserStatus> UnblockUser(string userId, CancellationToken cancellationToken = default);
+        Task<UserStatus> UnblockUser(string userId, CancellationToken cancellationToken = default);
 
         #endregion
     }
