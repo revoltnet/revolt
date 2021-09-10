@@ -607,7 +607,25 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<ERelationship> BlockUser(string userId, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var response = await Client.PutAsync($"users/{userId}/block", null!, cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+            
+            var content = await response.Content.ReadFromJsonAsync<JsonElement>(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            if (content.TryGetProperty("status", out content) && Enum.TryParse<ERelationship>(content.GetString(), out var status))
+            {
+                return status;
+            }
+            
+            throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
