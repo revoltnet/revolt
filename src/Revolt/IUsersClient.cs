@@ -110,7 +110,7 @@ namespace Revolt
         /// <param name="username">Username of the user.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
         /// <returns>An instance of <see cref="Status"/>.</returns>
-        Task<Status> SendFriendRequest(string username, CancellationToken cancellationToken = default);
+        Task<ERelationship> SendFriendRequest(string username, CancellationToken cancellationToken = default);
         
         /// <summary>
         /// Accept another user's friend request.
@@ -118,7 +118,7 @@ namespace Revolt
         /// <param name="username">Username of the user.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
         /// <returns>An instance of <see cref="Status"/>.</returns>
-        Task<Status> AcceptFriendRequest(string username, CancellationToken cancellationToken = default);
+        Task<ERelationship> AcceptFriendRequest(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Denies another user's friend request.
@@ -126,7 +126,7 @@ namespace Revolt
         /// <param name="username">Username of the user.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
         /// <returns>An instance of <see cref="Status"/>.</returns>
-        Task<Status> DenyFriendRequest(string username, CancellationToken cancellationToken = default);
+        Task<ERelationship> DenyFriendRequest(string username, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Removes an existing friend.
@@ -134,7 +134,7 @@ namespace Revolt
         /// <param name="username">Username of the user.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
         /// <returns>An instance of <see cref="Status"/>.</returns>
-        Task<Status> RemoveFriend(string username, CancellationToken cancellationToken = default);
+        Task<ERelationship> RemoveFriend(string username, CancellationToken cancellationToken = default);
         
         /// <summary>
         /// Block another user.
@@ -142,7 +142,7 @@ namespace Revolt
         /// <param name="userId">User id.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
         /// <returns>An instance of <see cref="Status"/>.</returns>
-        Task<Status> BlockUser(string userId, CancellationToken cancellationToken = default);
+        Task<ERelationship> BlockUser(string userId, CancellationToken cancellationToken = default);
         
         /// <summary>
         /// Unblock another user.
@@ -150,7 +150,7 @@ namespace Revolt
         /// <param name="userId">User id.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
         /// <returns>An instance of <see cref="Status"/>.</returns>
-        Task<Status> UnblockUser(string userId, CancellationToken cancellationToken = default);
+        Task<ERelationship> UnblockUser(string userId, CancellationToken cancellationToken = default);
 
         #endregion
     }

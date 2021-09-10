@@ -545,37 +545,37 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task<Status> SendFriendRequest(string username, CancellationToken cancellationToken = default)
+        public async Task<ERelationship> SendFriendRequest(string username, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<Status> AcceptFriendRequest(string username, CancellationToken cancellationToken = default)
+        public async Task<ERelationship> AcceptFriendRequest(string username, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<Status> DenyFriendRequest(string username, CancellationToken cancellationToken = default)
+        public async Task<ERelationship> DenyFriendRequest(string username, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<Status> RemoveFriend(string username, CancellationToken cancellationToken = default)
+        public async Task<ERelationship> RemoveFriend(string username, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<Status> BlockUser(string userId, CancellationToken cancellationToken = default)
+        public async Task<ERelationship> BlockUser(string userId, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<Status> UnblockUser(string userId, CancellationToken cancellationToken = default)
+        public async Task<ERelationship> UnblockUser(string userId, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
