@@ -1,13 +1,11 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -382,7 +380,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task EditUser(Status status, Profile profile, string avatarId, ERemovableInformation remove,
+        public async Task EditUser(Status? status, Profile? profile, string? avatarId, ERemovableInformation? remove,
             CancellationToken cancellationToken = default)
         {
             var payload = GeneratePayload(new
@@ -408,7 +406,22 @@ namespace Revolt
         /// <inheritdoc />
         public async Task ChangeUsername(string newUsername, string password, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var payload = GeneratePayload(new
+            {
+                username = newUsername,
+                password
+            });
+
+            var response = await Client.PatchAsync("users/@me/username", payload, cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
         }
 
         /// <inheritdoc />
