@@ -36,7 +36,7 @@ namespace Revolt.Models.Users.Information
         /// Only present if fetching self.
         /// </remarks>
         [JsonPropertyName("relations")]
-        public List<Relation>? Relations { get; init; }
+        public List<Relationship>? Relations { get; init; }
         
         /// <summary>
         /// Bitfield of user's badges.
