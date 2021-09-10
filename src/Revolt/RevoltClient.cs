@@ -385,7 +385,24 @@ namespace Revolt
         public async Task EditUser(Status status, Profile profile, string avatarId, ERemovableInformation remove,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var payload = GeneratePayload(new
+            {
+                status,
+                profile,
+                avatar = avatarId,
+                remove = remove.ToString()
+            });
+
+            var response = await Client.PatchAsync("users/@me", payload, cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
         }
 
         /// <inheritdoc />
