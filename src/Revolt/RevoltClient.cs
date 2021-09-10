@@ -457,14 +457,28 @@ namespace Revolt
                 throw new RevoltException(response.ReasonPhrase, e);
             }
 
-            var profile = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            var avatar = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
 
-            return profile ?? throw new RevoltException("Something went wrong deserializing the response.");
+            return avatar ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
+        /// <inheritdoc />
         public async Task<IEnumerable<string>> FetchMutualFriends(string userId, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var response = await Client.GetAsync($"users/{userId}/mutual", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+
+            var mutualFriends = await response.Content.ReadFromJsonAsync<IEnumerable<string>>(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            return mutualFriends ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
