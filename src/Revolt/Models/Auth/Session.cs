@@ -18,18 +18,18 @@ namespace Revolt.Models.Auth
         /// User ID. Optional.
         /// </summary>
         [JsonPropertyName("user_id")]
-        public string? UserId { get; set; }
+        public string? UserId { get; init; }
 
         /// <summary>
         /// Session Token. Optional.
         /// </summary>
         [JsonPropertyName("session_token")]
-        public string? SessionToken { get; set; }
+        public string? SessionToken { get; init; }
 
         /// <summary>
         /// Session device name.
         /// </summary>
         [JsonPropertyName("friendly_name")]
-        public string? FriendlyName { get; set; }
+        public string? FriendlyName { get; init; }
     }
 }
