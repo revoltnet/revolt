@@ -8,7 +8,7 @@ namespace Revolt
     /// See also <seealso cref="IPlatformClient"/>.
     /// See also <seealso cref="IAuthClient"/>.
     /// </remarks>
-    public interface IRevoltClient : IPlatformClient, IAuthClient
+    public interface IRevoltClient : IPlatformClient, IAuthClient, IUsersClient
     {
         
     }

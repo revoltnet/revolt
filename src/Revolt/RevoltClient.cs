@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -11,7 +12,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Revolt.Models.Auth;
+using Revolt.Models.Channels.Information;
 using Revolt.Models.Platform.Core;
+using Revolt.Models.Users.DirectMessaging;
+using Revolt.Models.Users.Information;
+using Revolt.Models.Users.Relationships;
 using Revolt.Options;
 
 namespace Revolt
@@ -356,6 +361,106 @@ namespace Revolt
 
         #endregion
 
+        #region IUsersClient
+
+        /// <inheritdoc />
+        public async Task<User> FetchUser(string userId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task EditUser(User.UserStatus status, Profile profile, string avatarId, ERemovableInformation remove,
+            CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task ChangeUsername(string newUsername, string password, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<Profile> FetchUserProfile(string userId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<MemoryStream> FetchDefaultAvatar(string userId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<string>> FetchMutualFriends(string userId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<IChannel>> FetchDirectMessageChannels(CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<DirectMessage> OpenDirectMessage(string userId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<Relationship>> FetchAllRelationships(CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<Relationship> FetchRelationship(CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<User.UserStatus> SendFriendRequest(string username, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<User.UserStatus> AcceptFriendRequest(string username, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<User.UserStatus> DenyFriendRequest(string username, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<User.UserStatus> RemoveFriend(string username, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<User.UserStatus> BlockUser(string userId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<User.UserStatus> UnblockUser(string userId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+        
         /// <summary>
         /// Generates a valid <see cref="StringContent"/> payload.
         /// </summary>
