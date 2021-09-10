@@ -2,9 +2,19 @@ using Revolt.Models.Users.Information;
 
 namespace Revolt.Models.Channels.Information
 {
+    /// <summary>
+    /// Channel interface.
+    /// </summary>
     public interface IChannel
     {
-        string Id { get; }
-        string Nonce { get; }
+        /// <summary>
+        /// Channel Id.
+        /// </summary>
+        string Id { get; init; }
+        
+        /// <summary>
+        /// Nonce hash.
+        /// </summary>
+        string Nonce { get; init; }
     }
 }
