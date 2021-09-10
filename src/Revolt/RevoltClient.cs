@@ -490,7 +490,20 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<DirectMessage> OpenDirectMessage(string userId, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var response = await Client.GetAsync($"users/{userId}/dm", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+
+            var dm = await response.Content.ReadFromJsonAsync<DirectMessage>(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            return dm ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
