@@ -365,7 +365,20 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<User> FetchUser(string userId, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var response = await Client.GetAsync($"users/{userId}", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+
+            var sessions = await response.Content.ReadFromJsonAsync<User>(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            return sessions ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
