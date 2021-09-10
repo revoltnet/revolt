@@ -1,27 +1,27 @@
 namespace Revolt.Models.Users.Information
 {
     /// <summary>
-    /// Removable information.
+    ///     Removable information.
     /// </summary>
     public enum ERemovableInformation
     {
         /// <summary>
-        /// Avatar.
+        ///     Avatar.
         /// </summary>
         Avatar,
-        
+
         /// <summary>
-        /// Profile background.
+        ///     Profile background.
         /// </summary>
         ProfileBackground,
-        
+
         /// <summary>
-        /// Profile context.
+        ///     Profile context.
         /// </summary>
         ProfileContent,
-        
+
         /// <summary>
-        /// Status text.
+        ///     Status text.
         /// </summary>
         StatusText
     }

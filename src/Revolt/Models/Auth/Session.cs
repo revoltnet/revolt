@@ -4,30 +4,30 @@ using System.Text.Json.Serialization;
 namespace Revolt.Models.Auth
 {
     /// <summary>
-    /// Session.
+    ///     Session.
     /// </summary>
     public class Session
     {
         /// <summary>
-        /// Session ID.
+        ///     Session ID.
         /// </summary>
         [JsonPropertyName("id")]
         public string Id { get; } = null!;
 
         /// <summary>
-        /// User ID. Optional.
+        ///     User ID. Optional.
         /// </summary>
         [JsonPropertyName("user_id")]
         public string? UserId { get; init; }
 
         /// <summary>
-        /// Session Token. Optional.
+        ///     Session Token. Optional.
         /// </summary>
         [JsonPropertyName("session_token")]
         public string? SessionToken { get; init; }
 
         /// <summary>
-        /// Session device name.
+        ///     Session device name.
         /// </summary>
         [JsonPropertyName("friendly_name")]
         public string? FriendlyName { get; init; }

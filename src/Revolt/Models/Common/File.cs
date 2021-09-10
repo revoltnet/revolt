@@ -1,45 +1,44 @@
 using System.Text.Json.Serialization;
-using Revolt.Models.Users.Information;
 
 namespace Revolt.Models.Common
 {
     /// <summary>
-    /// Represents a file, attachment, etc.
+    ///     Represents a file, attachment, etc.
     /// </summary>
     public class File
     {
         /// <summary>
-        /// File id.
+        ///     File id.
         /// </summary>
         [JsonPropertyName("_id")]
         public string Id { get; set; }
-        
+
         /// <summary>
-        /// File tag.
+        ///     File tag.
         /// </summary>
         [JsonPropertyName("tag")]
         public string Tag { get; set; }
-        
+
         /// <summary>
-        /// File size (in bytes)
+        ///     File size (in bytes)
         /// </summary>
         [JsonPropertyName("size")]
         public long Size { get; set; }
-        
+
         /// <summary>
-        /// File name.
+        ///     File name.
         /// </summary>
         [JsonPropertyName("filename")]
         public string Filename { get; set; }
-        
+
         /// <summary>
-        /// File metadata.
+        ///     File metadata.
         /// </summary>
         [JsonPropertyName("metadata")]
         public IMetadata Metadata { get; set; }
-        
+
         /// <summary>
-        /// File content type.
+        ///     File content type.
         /// </summary>
         [JsonPropertyName("content_type")]
         public string ContentType { get; set; }

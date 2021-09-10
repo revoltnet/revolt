@@ -6,13 +6,13 @@ namespace Revolt.Models.Users.Information
     public class Profile
     {
         /// <summary>
-        /// Profile content.
+        ///     Profile content.
         /// </summary>
         [JsonPropertyName("content")]
         public string Content { get; set; }
-        
+
         /// <summary>
-        /// Profile background.
+        ///     Profile background.
         /// </summary>
         [JsonPropertyName("background")]
         public File Background { get; set; }

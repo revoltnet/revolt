@@ -13,7 +13,7 @@ namespace Revolt.Options
         public const string Revolt = nameof(Revolt);
 
         /// <summary>
-        /// Default constructor.
+        ///     Default constructor.
         /// </summary>
         public RevoltOptions()
         {

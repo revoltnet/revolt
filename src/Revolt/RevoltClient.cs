@@ -27,17 +27,28 @@ namespace Revolt
         /// </summary>
         public readonly RevoltOptions Options;
 
-        /// <summary>
-        /// <see cref="HttpClient"/>.
-        /// </summary>
-        protected HttpClient Client { get; }
-
         public RevoltClient(IOptions<RevoltOptions> options, HttpClient client)
         {
             Options = options.Value;
             Client = client;
 
             Client.BaseAddress = Options.Endpoint;
+        }
+
+        /// <summary>
+        ///     <see cref="HttpClient" />.
+        /// </summary>
+        protected HttpClient Client { get; }
+
+        /// <summary>
+        ///     Generates a valid <see cref="StringContent" /> payload.
+        /// </summary>
+        /// <param name="payload">The object for the body of the payload.</param>
+        /// <typeparam name="T">A valid object.</typeparam>
+        /// <returns>A valid <see cref="StringContent" />.</returns>
+        protected static StringContent GeneratePayload<T>(T payload)
+        {
+            return new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
         }
 
         #region IPLatformClient
@@ -77,10 +88,7 @@ namespace Revolt
 
             var content = await response.Content.ReadFromJsonAsync<JsonElement>(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            if (content.TryGetProperty("onboarding", out content))
-            {
-                return content.GetBoolean();
-            }
+            if (content.TryGetProperty("onboarding", out content)) return content.GetBoolean();
 
             throw new RevoltException("Something went wrong deserializing the response.");
         }
@@ -110,7 +118,8 @@ namespace Revolt
         #region IAuthClient
 
         /// <inheritdoc />
-        public async Task<string> CreateAccountAsync(string email, string password, string invite, string captcha, CancellationToken cancellationToken = default)
+        public async Task<string> CreateAccountAsync(string email, string password, string invite, string captcha,
+            CancellationToken cancellationToken = default)
         {
             var payload = GeneratePayload(new
             {
@@ -134,9 +143,7 @@ namespace Revolt
             var content = await response.Content.ReadFromJsonAsync<JsonElement>(cancellationToken: cancellationToken).ConfigureAwait(false);
 
             if (content.TryGetProperty("user_id", out content))
-            {
                 return content.GetString() ?? throw new RevoltException("Something went wrong deserializing the response.");
-            }
 
             throw new RevoltException("Something went wrong deserializing the response.");
         }
@@ -163,7 +170,8 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task<Session> LoginAsync(string email, string password, string deviceName, string captcha, CancellationToken cancellationToken = default)
+        public async Task<Session> LoginAsync(string email, string password, string deviceName, string captcha,
+            CancellationToken cancellationToken = default)
         {
             var payload = GeneratePayload(new
             {
@@ -336,7 +344,8 @@ namespace Revolt
                 throw new RevoltException(response.ReasonPhrase, e);
             }
 
-            var sessions = await response.Content.ReadFromJsonAsync<IEnumerable<Session>>(cancellationToken: cancellationToken).ConfigureAwait(false);
+            var sessions = await response.Content.ReadFromJsonAsync<IEnumerable<Session>>(cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
 
             return sessions ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
@@ -344,7 +353,7 @@ namespace Revolt
         /// <inheritdoc />
         public async Task LogoutAsync(CancellationToken cancellationToken)
         {
-            var response = await Client.GetAsync($"auth/logout", cancellationToken).ConfigureAwait(false);
+            var response = await Client.GetAsync("auth/logout", cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -361,7 +370,7 @@ namespace Revolt
         #region IUsersClient
 
         /// <inheritdoc />
-        public async Task<User> FetchUser(string userId, CancellationToken cancellationToken = default)
+        public async Task<User> FetchUserAsync(string userId, CancellationToken cancellationToken = default)
         {
             var response = await Client.GetAsync($"users/{userId}", cancellationToken).ConfigureAwait(false);
 
@@ -380,7 +389,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task EditUser(Status? status, Profile? profile, string? avatarId, ERemovableInformation? remove,
+        public async Task EditUserAsync(Status? status, Profile? profile, string? avatarId, ERemovableInformation? remove,
             CancellationToken cancellationToken = default)
         {
             var payload = GeneratePayload(new
@@ -404,7 +413,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task ChangeUsername(string newUsername, string password, CancellationToken cancellationToken = default)
+        public async Task ChangeUsernameAsync(string newUsername, string password, CancellationToken cancellationToken = default)
         {
             var payload = GeneratePayload(new
             {
@@ -425,7 +434,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task<Profile> FetchUserProfile(string userId, CancellationToken cancellationToken = default)
+        public async Task<Profile> FetchUserProfileAsync(string userId, CancellationToken cancellationToken = default)
         {
             var response = await Client.GetAsync($"users/{userId}/profile", cancellationToken).ConfigureAwait(false);
 
@@ -444,7 +453,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task<Stream> FetchDefaultAvatar(string userId, CancellationToken cancellationToken = default)
+        public async Task<Stream> FetchDefaultAvatarAsync(string userId, CancellationToken cancellationToken = default)
         {
             var response = await Client.GetAsync($"users/{userId}/default_avatar", cancellationToken).ConfigureAwait(false);
 
@@ -463,7 +472,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<string>> FetchMutualFriends(string userId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<string>> FetchMutualFriendsAsync(string userId, CancellationToken cancellationToken = default)
         {
             var response = await Client.GetAsync($"users/{userId}/mutual", cancellationToken).ConfigureAwait(false);
 
@@ -476,19 +485,20 @@ namespace Revolt
                 throw new RevoltException(response.ReasonPhrase, e);
             }
 
-            var mutualFriends = await response.Content.ReadFromJsonAsync<IEnumerable<string>>(cancellationToken: cancellationToken).ConfigureAwait(false);
+            var mutualFriends = await response.Content.ReadFromJsonAsync<IEnumerable<string>>(cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
 
             return mutualFriends ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<IChannel>> FetchDirectMessageChannels(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<IChannel>> FetchDirectMessageChannelsAsync(CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<DirectMessage> OpenDirectMessage(string userId, CancellationToken cancellationToken = default)
+        public async Task<DirectMessage> OpenDirectMessageAsync(string userId, CancellationToken cancellationToken = default)
         {
             var response = await Client.GetAsync($"users/{userId}/dm", cancellationToken).ConfigureAwait(false);
 
@@ -507,7 +517,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<Relationship>> FetchAllRelationships(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Relationship>> FetchAllRelationshipsAsync(CancellationToken cancellationToken = default)
         {
             var response = await Client.GetAsync("users/relationships", cancellationToken).ConfigureAwait(false);
 
@@ -520,13 +530,14 @@ namespace Revolt
                 throw new RevoltException(response.ReasonPhrase, e);
             }
 
-            var relationships = await response.Content.ReadFromJsonAsync<IEnumerable<Relationship>>(cancellationToken: cancellationToken).ConfigureAwait(false);
+            var relationships = await response.Content.ReadFromJsonAsync<IEnumerable<Relationship>>(cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
 
             return relationships ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
-        public async Task<Relationship> FetchRelationship(string userId, CancellationToken cancellationToken = default)
+        public async Task<Relationship> FetchRelationshipAsync(string userId, CancellationToken cancellationToken = default)
         {
             var response = await Client.GetAsync($"users/{userId}/relationships", cancellationToken).ConfigureAwait(false);
 
@@ -539,13 +550,14 @@ namespace Revolt
                 throw new RevoltException(response.ReasonPhrase, e);
             }
 
-            var relationship = await response.Content.ReadFromJsonAsync<Relationship>(cancellationToken: cancellationToken).ConfigureAwait(false);
+            var relationship = await response.Content.ReadFromJsonAsync<Relationship>(cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
 
             return relationship ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
-        public async Task<ERelationship> SendFriendRequest(string username, CancellationToken cancellationToken = default)
+        public async Task<ERelationship> SendFriendRequestAsync(string username, CancellationToken cancellationToken = default)
         {
             var response = await Client.PutAsync($"users/{username}/friend", null!, cancellationToken).ConfigureAwait(false);
 
@@ -557,25 +569,23 @@ namespace Revolt
             {
                 throw new RevoltException(response.ReasonPhrase, e);
             }
-            
+
             var content = await response.Content.ReadFromJsonAsync<JsonElement>(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            if (content.TryGetProperty("status", out content) && Enum.TryParse<ERelationship>(content.GetString(), out var status))
-            {
-                return status;
-            }
-            
+            if (content.TryGetProperty("status", out content) &&
+                Enum.TryParse<ERelationship>(content.GetString(), out var status)) return status;
+
             throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
-        public async Task<ERelationship> AcceptFriendRequest(string username, CancellationToken cancellationToken = default)
+        public async Task<ERelationship> AcceptFriendRequestAsync(string username, CancellationToken cancellationToken = default)
         {
-            return await SendFriendRequest(username, cancellationToken).ConfigureAwait(false);
+            return await SendFriendRequestAsync(username, cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<ERelationship> DenyFriendRequest(string username, CancellationToken cancellationToken = default)
+        public async Task<ERelationship> DenyFriendRequestAsync(string username, CancellationToken cancellationToken = default)
         {
             var response = await Client.DeleteAsync($"users/{username}/friend", cancellationToken).ConfigureAwait(false);
 
@@ -587,25 +597,23 @@ namespace Revolt
             {
                 throw new RevoltException(response.ReasonPhrase, e);
             }
-            
+
             var content = await response.Content.ReadFromJsonAsync<JsonElement>(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            if (content.TryGetProperty("status", out content) && Enum.TryParse<ERelationship>(content.GetString(), out var status))
-            {
-                return status;
-            }
-            
+            if (content.TryGetProperty("status", out content) &&
+                Enum.TryParse<ERelationship>(content.GetString(), out var status)) return status;
+
             throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
-        public async Task<ERelationship> RemoveFriend(string username, CancellationToken cancellationToken = default)
+        public async Task<ERelationship> RemoveFriendAsync(string username, CancellationToken cancellationToken = default)
         {
-            return await DenyFriendRequest(username, cancellationToken).ConfigureAwait(false);
+            return await DenyFriendRequestAsync(username, cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<ERelationship> BlockUser(string userId, CancellationToken cancellationToken = default)
+        public async Task<ERelationship> BlockUserAsync(string userId, CancellationToken cancellationToken = default)
         {
             var response = await Client.PutAsync($"users/{userId}/block", null!, cancellationToken).ConfigureAwait(false);
 
@@ -617,21 +625,18 @@ namespace Revolt
             {
                 throw new RevoltException(response.ReasonPhrase, e);
             }
-            
+
             var content = await response.Content.ReadFromJsonAsync<JsonElement>(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            if (content.TryGetProperty("status", out content) && Enum.TryParse<ERelationship>(content.GetString(), out var status))
-            {
-                return status;
-            }
-            
+            if (content.TryGetProperty("status", out content) &&
+                Enum.TryParse<ERelationship>(content.GetString(), out var status)) return status;
+
             throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         /// <inheritdoc />
-        public async Task<ERelationship> UnblockUser(string userId, CancellationToken cancellationToken = default)
+        public async Task<ERelationship> UnblockUserAsync(string userId, CancellationToken cancellationToken = default)
         {
-            
             var response = await Client.DeleteAsync($"users/{userId}/friend", cancellationToken).ConfigureAwait(false);
 
             try
@@ -642,28 +647,15 @@ namespace Revolt
             {
                 throw new RevoltException(response.ReasonPhrase, e);
             }
-            
+
             var content = await response.Content.ReadFromJsonAsync<JsonElement>(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            if (content.TryGetProperty("status", out content) && Enum.TryParse<ERelationship>(content.GetString(), out var status))
-            {
-                return status;
-            }
-            
+            if (content.TryGetProperty("status", out content) &&
+                Enum.TryParse<ERelationship>(content.GetString(), out var status)) return status;
+
             throw new RevoltException("Something went wrong deserializing the response.");
         }
 
         #endregion
-        
-        /// <summary>
-        /// Generates a valid <see cref="StringContent"/> payload.
-        /// </summary>
-        /// <param name="payload">The object for the body of the payload.</param>
-        /// <typeparam name="T">A valid object.</typeparam>
-        /// <returns>A valid <see cref="StringContent"/>.</returns>
-        protected static StringContent GeneratePayload<T>(T payload)
-        {
-            return new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
-        }
     }
 }

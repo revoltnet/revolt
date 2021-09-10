@@ -1,42 +1,42 @@
 namespace Revolt.Models.Users.Relationships
 {
     /// <summary>
-    /// Possible user relationships.
+    ///     Possible user relationships.
     /// </summary>
     public enum ERelationship
     {
         /// <summary>
-        /// Blocked.
+        ///     Blocked.
         /// </summary>
         Blocked,
-        
+
         /// <summary>
-        /// Blocked other.
+        ///     Blocked other.
         /// </summary>
         BlockedOther,
-        
+
         /// <summary>
-        /// Friend.
+        ///     Friend.
         /// </summary>
         Friend,
-        
+
         /// <summary>
-        /// Incoming.
+        ///     Incoming.
         /// </summary>
         Incoming,
-        
+
         /// <summary>
-        /// None.
+        ///     None.
         /// </summary>
         None,
-        
+
         /// <summary>
-        /// Outgoing.
+        ///     Outgoing.
         /// </summary>
         Outgoing,
-        
+
         /// <summary>
-        /// User.
+        ///     User.
         /// </summary>
         User
     }

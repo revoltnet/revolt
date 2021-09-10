@@ -4,46 +4,46 @@ using System.Text.Json.Serialization;
 namespace Revolt.Models.Users.Information
 {
     /// <summary>
-    /// User status.
+    ///     User status.
     /// </summary>
     public class Status
     {
         /// <summary>
-        /// User's custom status text.
-        /// </summary>
-        [JsonPropertyName("text")]
-        public string? Text { get; init; }
-            
-        /// <summary>
-        /// User presence.
-        /// </summary>
-        [JsonPropertyName("presence")]
-        public EPresence? Presence { get; init; }
-
-        /// <summary>
-        /// Possible user presences.
+        ///     Possible user presences.
         /// </summary>
         public enum EPresence
         {
             /// <summary>
-            /// Busy.
+            ///     Busy.
             /// </summary>
             Busy,
-                
+
             /// <summary>
-            /// Idle.
+            ///     Idle.
             /// </summary>
             Idle,
-                
+
             /// <summary>
-            /// Invisible.
+            ///     Invisible.
             /// </summary>
             Invisible,
-                
+
             /// <summary>
-            /// Online.
+            ///     Online.
             /// </summary>
             Online
         }
+
+        /// <summary>
+        ///     User's custom status text.
+        /// </summary>
+        [JsonPropertyName("text")]
+        public string? Text { get; init; }
+
+        /// <summary>
+        ///     User presence.
+        /// </summary>
+        [JsonPropertyName("presence")]
+        public EPresence? Presence { get; init; }
     }
 }
