@@ -1,3 +1,4 @@
+#nullable enable
 namespace Revolt.Models.Channels.Information
 {
     /// <summary>
@@ -13,6 +14,6 @@ namespace Revolt.Models.Channels.Information
         /// <summary>
         ///     Nonce hash.
         /// </summary>
-        string Nonce { get; init; }
+        string? Nonce { get; init; }
     }
 }
