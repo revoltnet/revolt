@@ -494,7 +494,47 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<IEnumerable<IChannel>> FetchDirectMessageChannelsAsync(CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var response = await Client.GetAsync($"users/dms", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
+            
+            var content = await response.Content.ReadFromJsonAsync<JsonElement>(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+            if (content.ValueKind is not JsonValueKind.Array)
+            {
+                throw new RevoltException("TODO ");
+            }
+            
+            var dms = new List<IChannel>();
+            
+            foreach (var elem in content.EnumerateArray())
+            {
+                if (elem.TryGetProperty("channel_type", out var channelType))
+                {
+                    if (channelType.GetString() == "DirectMessage")
+                    {
+                        var dm = JsonSerializer.Deserialize<DirectMessage>(elem.GetRawText());
+                        if (dm is not null)
+                        {
+                            dms.Add(dm);
+                        }
+                    }
+                    else if (channelType.GetString() == "Group")
+                    {
+                        //TODO
+                    }
+                }
+                
+            }
+
+            return dms;
         }
 
         /// <inheritdoc />
