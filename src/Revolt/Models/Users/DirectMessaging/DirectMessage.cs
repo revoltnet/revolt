@@ -10,6 +10,10 @@ namespace Revolt.Models.Users.DirectMessaging
     /// </summary>
     public class DirectMessage : IChannel
     {
+        /// <inheritdoc />
+        [JsonPropertyName("_id")]
+        public string Id { get; init; } = null!;
+
         /// <summary>
         ///     Whether this DM is active.
         /// </summary>
@@ -27,10 +31,6 @@ namespace Revolt.Models.Users.DirectMessaging
         /// </summary>
         [JsonPropertyName("last_message")]
         public LastMessage LastMessage { get; init; } = null!;
-
-        /// <inheritdoc />
-        [JsonPropertyName("_id")]
-        public string Id { get; init; } = null!;
 
         /// <inheritdoc />
         [JsonPropertyName("nonce")]
