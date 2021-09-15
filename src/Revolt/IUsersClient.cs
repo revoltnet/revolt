@@ -74,8 +74,12 @@ namespace Revolt
         /// <summary>
         ///     This fetches your direct messages, including any DM and group DM conversations.
         /// </summary>
+        /// <remarks>
+        /// The only possible concrete types that can be returned from this method
+        /// are <see cref="DirectMessage"/> and TODO.
+        /// </remarks>
         /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
-        /// <returns></returns>
+        /// <returns>A collection of <see cref="DirectMessage"/> and/or TODO</returns>
         Task<IEnumerable<IChannel>> FetchDirectMessageChannelsAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -83,7 +87,7 @@ namespace Revolt
         /// </summary>
         /// <param name="userId">User id.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="DirectMessage"/> with the specified user.</returns>
         Task<DirectMessage> OpenDirectMessageAsync(string userId, CancellationToken cancellationToken = default);
 
         #endregion
