@@ -7,6 +7,15 @@ namespace Revolt
 {
     public interface IAuthClient
     {
+        #region Account
+
+        /// <summary>
+        ///     Fetch account information.
+        /// </summary>
+        /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
+        /// <returns>The information for the <see cref="Account" />.</returns>
+        public Task<Account> FetchAccountAsync(CancellationToken cancellationToken = default);
+
         /// <summary>
         ///     Create a new account.
         /// </summary>
@@ -29,17 +38,13 @@ namespace Revolt
         public Task ResendVerificationAsync(string email, string captcha, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Create a new session.
+        /// Verifies an email with a code.
         /// </summary>
-        /// <param name="email">Valid email address.</param>
-        /// <param name="password">Password.</param>
-        /// <param name="deviceName">Device name.</param>
-        /// <param name="captcha">Captcha verification code.</param>
+        /// <param name="code">Verification code.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
-        /// <returns>A new and valid <see cref="Session" />.</returns>
-        public Task<Session> LoginAsync(string email, string password, string deviceName, string captcha,
-            CancellationToken cancellationToken = default);
-
+        /// <returns></returns>
+        public Task VerifyEmailAsync(string code, CancellationToken cancellationToken = default);
+        
         /// <summary>
         ///     Send password reset email.
         /// </summary>
@@ -57,21 +62,7 @@ namespace Revolt
         /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
         /// <returns></returns>
         public Task PasswordResetAsync(string newPassword, string token, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        ///     Fetch account information.
-        /// </summary>
-        /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
-        /// <returns>The information for the <see cref="Account" />.</returns>
-        public Task<Account> FetchAccountAsync(CancellationToken cancellationToken = default);
-
-        /// <summary>
-        ///     Check if we are authenticated.
-        /// </summary>
-        /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
-        /// <returns></returns>
-        public Task CheckAuthAsync(CancellationToken cancellationToken = default);
-
+        
         /// <summary>
         ///     Change account password.
         /// </summary>
@@ -89,7 +80,46 @@ namespace Revolt
         /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
         /// <returns></returns>
         public Task ChangeEmailAsync(string password, string newEmail, CancellationToken cancellationToken = default);
+        
+        #endregion
 
+        #region Session
+
+        /// <summary>
+        ///     Create a new session.
+        /// </summary>
+        /// <param name="email">Valid email address.</param>
+        /// <param name="password">Password.</param>
+        /// <param name="deviceName">Device name.</param>
+        /// <param name="captcha">Captcha verification code.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
+        /// <returns>A new and valid <see cref="Session" />.</returns>
+        public Task<Session> LoginAsync(string email, string password, string deviceName, string captcha,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Delete current session.
+        /// </summary>
+        /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
+        /// <returns></returns>
+        public Task LogoutAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Edit session information.
+        /// </summary>
+        /// <param name="sessionId">Session id.</param>
+        /// <param name="friendlyName">Session friendly name.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
+        /// <returns></returns>
+        public Task EditSessionAsync(string sessionId, string friendlyName, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Fetch all sessions.
+        /// </summary>
+        /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
+        /// <returns>A collection of <see cref="Session" />.</returns>
+        public Task<IEnumerable<Session>> FetchSessionsAsync(CancellationToken cancellationToken = default);
+        
         /// <summary>
         ///     Delete existing session.
         /// </summary>
@@ -99,17 +129,13 @@ namespace Revolt
         public Task DeleteSessionAsync(string sessionId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Fetch all sessions.
+        /// Delete all active sessions.
         /// </summary>
-        /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
-        /// <returns>A collection of <see cref="Session" />.</returns>
-        public Task<IEnumerable<Session>> FetchSessionsAsync(CancellationToken cancellationToken = default);
-
-        /// <summary>
-        ///     Delete current session.
-        /// </summary>
+        /// <param name="revokeSelf">Whether to revoke current session too. Defaults to false.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
         /// <returns></returns>
-        public Task LogoutAsync(CancellationToken cancellationToken);
+        public Task DeleteAllSessions(bool revokeSelf = false, CancellationToken cancellationToken = default);
+
+        #endregion
     }
 }
