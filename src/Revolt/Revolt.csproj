@@ -26,6 +26,9 @@
       <Compile Update="RevoltClient.IPLatformClient.cs">
         <DependentUpon>RevoltClient.cs</DependentUpon>
       </Compile>
+      <Compile Update="RevoltClient.IUsersClient.cs">
+        <DependentUpon>RevoltClient.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
