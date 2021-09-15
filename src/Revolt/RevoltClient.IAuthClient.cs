@@ -88,7 +88,16 @@ namespace Revolt
         /// <inheritdoc />
         public async Task VerifyEmailAsync(string code, CancellationToken cancellationToken = default)
         {
-            throw new System.NotImplementedException();
+            var response = await Client.PostAsync($"auth/account/verify/{code}", null!, cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
         }
 
         /// <inheritdoc />
@@ -133,6 +142,7 @@ namespace Revolt
             }
         }
 
+        /// <inheritdoc />
         public async Task ChangePasswordAsync(string oldPassword, string newPassword, CancellationToken cancellationToken = default)
         {
             var payload = GeneratePayload(new
@@ -153,6 +163,7 @@ namespace Revolt
             }
         }
 
+        /// <inheritdoc />
         public async Task ChangeEmailAsync(string password, string newEmail, CancellationToken cancellationToken = default)
         {
             var payload = GeneratePayload(new
@@ -204,6 +215,7 @@ namespace Revolt
             return session ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
+        /// <inheritdoc />
         public async Task LogoutAsync(CancellationToken cancellationToken)
         {
             var response = await Client.GetAsync("auth/logout", cancellationToken).ConfigureAwait(false);
@@ -218,11 +230,27 @@ namespace Revolt
             }
         }
 
+        /// <inheritdoc />
         public async Task EditSessionAsync(string sessionId, string friendlyName, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var payload = GeneratePayload(new
+            {
+                friendly_name = friendlyName
+            });
+
+            var response = await Client.PatchAsync($"auth/sessions/{sessionId}", payload, cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
         }
 
+        /// <inheritdoc />
         public async Task<IEnumerable<Session>> FetchSessionsAsync(CancellationToken cancellationToken = default)
         {
             var response = await Client.GetAsync("auth/sessions", cancellationToken).ConfigureAwait(false);
@@ -242,6 +270,7 @@ namespace Revolt
             return sessions ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
+        /// <inheritdoc />
         public async Task DeleteSessionAsync(string sessionId, CancellationToken cancellationToken = default)
         {
             var response = await Client.DeleteAsync($"auth/session/{sessionId}", cancellationToken).ConfigureAwait(false);
@@ -256,9 +285,19 @@ namespace Revolt
             }
         }
 
+        /// <inheritdoc />
         public async Task DeleteAllSessions(bool revokeSelf = false, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var response = await Client.DeleteAsync($"auth/session/all?revoke_self={revokeSelf}", cancellationToken).ConfigureAwait(false);
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new RevoltException(response.ReasonPhrase, e);
+            }
         }
 
         #endregion
