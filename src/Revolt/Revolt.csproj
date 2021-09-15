@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="RevoltClient.IPLatformClient.cs">
+      <Compile Update="RevoltClient.IPlatformClient.cs">
         <DependentUpon>RevoltClient.cs</DependentUpon>
       </Compile>
       <Compile Update="RevoltClient.IUsersClient.cs">

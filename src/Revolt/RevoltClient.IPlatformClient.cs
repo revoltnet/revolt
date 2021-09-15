@@ -9,7 +9,9 @@ namespace Revolt
 {
     public partial class RevoltClient
     {
-        #region IPLatformClient
+        // This partial class implements all methods related to IPlatformClient.
+
+        #region Core
 
         /// <inheritdoc />
         public async Task<Node> QueryNodeAsync(CancellationToken cancellationToken = default)
@@ -30,6 +32,10 @@ namespace Revolt
             return node ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
+        #endregion
+
+        #region Onboarding
+        
         /// <inheritdoc />
         public async Task<bool> CheckOnboardingStatusAsync(CancellationToken cancellationToken = default)
         {

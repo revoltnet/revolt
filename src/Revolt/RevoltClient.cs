@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,6 +26,11 @@ namespace Revolt
         /// </summary>
         public readonly RevoltOptions Options;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="client"></param>
         public RevoltClient(IOptions<RevoltOptions> options, HttpClient client)
         {
             Options = options.Value;

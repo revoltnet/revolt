@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +16,9 @@ namespace Revolt
 {
     public partial class RevoltClient
     {
-        #region IUsersClient
+        // This partial class implements all methods related to IUsersClient.
+
+        #region Information
 
         /// <inheritdoc />
         public async Task<User> FetchUserAsync(string userId, CancellationToken cancellationToken = default)
@@ -139,6 +142,10 @@ namespace Revolt
             return mutualFriends ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
 
+        #endregion
+
+        #region Direct Messaging
+        
         /// <inheritdoc />
         public async Task<IEnumerable<IChannel>> FetchDirectMessageChannelsAsync(CancellationToken cancellationToken = default)
         {
@@ -164,20 +171,19 @@ namespace Revolt
 
             foreach (var elem in content.EnumerateArray())
             {
-                if (elem.TryGetProperty("channel_type", out var channelType))
+                if (!elem.TryGetProperty("channel_type", out var channelType)) continue;
+                
+                if (channelType.GetString() == "DirectMessage")
                 {
-                    if (channelType.GetString() == "DirectMessage")
+                    var dm = JsonSerializer.Deserialize<DirectMessage>(elem.GetRawText());
+                    if (dm is not null)
                     {
-                        var dm = JsonSerializer.Deserialize<DirectMessage>(elem.GetRawText());
-                        if (dm is not null)
-                        {
-                            dms.Add(dm);
-                        }
+                        dms.Add(dm);
                     }
-                    else if (channelType.GetString() == "Group")
-                    {
-                        //TODO
-                    }
+                }
+                else if (channelType.GetString() == "Group")
+                {
+                    //TODO
                 }
             }
 
@@ -202,6 +208,10 @@ namespace Revolt
 
             return dm ?? throw new RevoltException("Something went wrong deserializing the response.");
         }
+        
+        #endregion
+        
+        #region Relationships
 
         /// <inheritdoc />
         public async Task<IEnumerable<Relationship>> FetchAllRelationshipsAsync(CancellationToken cancellationToken = default)
