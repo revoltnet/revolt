@@ -35,7 +35,7 @@ namespace Revolt
         /// <param name="username">New username.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
         /// <returns></returns>
-        Task CompleteOnboarding(string username, CancellationToken cancellationToken = default);
+        Task CompleteOnboardingAsync(string username, CancellationToken cancellationToken = default);
 
         #endregion
     }

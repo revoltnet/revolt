@@ -94,7 +94,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task CompleteOnboarding(string username, CancellationToken cancellationToken = default)
+        public async Task CompleteOnboardingAsync(string username, CancellationToken cancellationToken = default)
         {
             var payload = GeneratePayload(new
             {
