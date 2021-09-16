@@ -12,6 +12,7 @@
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <PackageLicenseExpression>AGPL-3.0-only</PackageLicenseExpression>
         <Copyright>Copyright © Lucas Maximiliano Marino 2021</Copyright>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
