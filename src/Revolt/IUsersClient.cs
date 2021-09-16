@@ -31,7 +31,7 @@ namespace Revolt
         /// <param name="remove">Field to remove from user object.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
         /// <returns></returns>
-        Task EditUserAsync(Status? status, Profile? profile, string? avatarId, ERemovableInformation? remove,
+        Task EditUserAsync(Status? status, Profile? profile, string? avatarId, ERemovableUserInformation? remove,
             CancellationToken cancellationToken = default);
 
         /// <summary>

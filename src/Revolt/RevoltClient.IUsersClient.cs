@@ -40,7 +40,7 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task EditUserAsync(Status? status, Profile? profile, string? avatarId, ERemovableInformation? remove,
+        public async Task EditUserAsync(Status? status, Profile? profile, string? avatarId, ERemovableUserInformation? remove,
             CancellationToken cancellationToken = default)
         {
             var payload = GeneratePayload(new
