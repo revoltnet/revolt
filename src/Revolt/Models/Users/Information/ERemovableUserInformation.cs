@@ -1,9 +1,9 @@
 namespace Revolt.Models.Users.Information
 {
     /// <summary>
-    ///     Removable information.
+    ///     Different types of removable user information.
     /// </summary>
-    public enum ERemovableInformation
+    public enum ERemovableUserInformation
     {
         /// <summary>
         ///     Avatar.
