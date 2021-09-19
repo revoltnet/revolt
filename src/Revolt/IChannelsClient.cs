@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -158,7 +159,7 @@ namespace Revolt
         /// Maximum number of messages to fetch.
         /// For fetching nearby messages, this is (limit + 1).
         /// <para>
-        /// [ 1 .. 100 ]
+        /// [ 1 .. 100 ].
         /// </para>
         /// </param>
         /// <param name="before">Message id before which messages should be fetched.</param>
@@ -174,7 +175,108 @@ namespace Revolt
         /// </returns>
         Task<(IEnumerable<Message> messages, IEnumerable<User> users, IEnumerable<Member>? members)> FetchMessagesWithUsersAsync(string channelId, 
             int limit, string before, string after, ESort sort, string nearby, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Retrieves a message by id.
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="messageId">Message id.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns>An instance of <see cref="Message"/>.</returns>
+        Task<Message> FetchMessageAsync(string channelId, string messageId, CancellationToken cancellationToken = default);
         
+        /// <summary>
+        /// Edits a message that you've previously sent.
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="messageId">Message id.</param>
+        /// <param name="content">
+        /// New message content.
+        /// <para>
+        ///[ 1 .. 2000 ] characters.
+        /// </para>
+        /// </param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns></returns>
+        Task EditMessageAsync(string channelId, string messageId, string content, CancellationToken cancellationToken = default);
+        
+        /// <summary>
+        /// Delete a message you've sent or one you have permission to delete.
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="messageId">Message id.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns></returns>
+        Task DeleteMessageAsync(string channelId, string messageId, CancellationToken cancellationToken = default);
+        
+        /// <summary>
+        /// This route returns any changed message objects and tells you if any have been deleted.
+        /// Don't actually poll this route, instead use this to update your local database.
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="messageIds">Collection of messages ids.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns>An tuple containing a collection of changed <see cref="Message"/> and a collection deleted messages ids.</returns>
+        Task<(IEnumerable<Message> changed, IEnumerable<string> deleted)> PollMessageChangesAsync(string channelId, IEnumerable<string> messageIds, CancellationToken cancellationToken = default);
+        
+        /// <summary>
+        /// This route searches for messages within the given parameters and includes
+        /// any related users (and members in channels).
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="query">
+        /// Full-text search query. See MongoDB documentation for more information.
+        /// <para>
+        /// [ 1 .. 64 ] characters.
+        /// </para>
+        /// </param>
+        /// <param name="limit">
+        /// Maximum number of messages to fetch.
+        /// For fetching nearby messages, this is (limit + 1).
+        /// <para>
+        /// [ 1 .. 100 ].
+        /// </para>
+        /// </param>
+        /// <param name="before">Message id before which messages should be fetched.</param>
+        /// <param name="after">Message id after which messages should be fetched.</param>
+        /// <param name="sort">Message sort direction.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns>A collection of <see cref="Message"/>.</returns>
+        Task<IEnumerable<Message>> SearchMessagesAsync(string channelId, string query, int limit,string before, string after, ESort sort, 
+            CancellationToken cancellationToken = default);
+        
+        /// <summary>
+        /// This route searches for messages within the given parameters.
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="query"></param>
+        /// <param name="limit">
+        /// Maximum number of messages to fetch.
+        /// For fetching nearby messages, this is (limit + 1).
+        /// <para>
+        /// [ 1 .. 100 ].
+        /// </para>
+        /// </param>
+        /// <param name="before">Message id before which messages should be fetched.</param>
+        /// <param name="after">Message id after which messages should be fetched.</param>
+        /// <param name="sort">Message sort direction.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns>
+        /// A tuple containing a collection of <see cref="Message"/>, a collection of <see cref="User"/>,
+        /// and in some cases a collection of <see cref="Member"/>.
+        /// </returns>
+        Task<(IEnumerable<Message> messages, IEnumerable<User> users, IEnumerable<Member>? members)> SearchMessagesWithUsersAsync(string channelId, 
+            string query, int limit,string before, string after, ESort sort, CancellationToken cancellationToken = default);
+        
+        /// <summary>
+        /// Lets the server and all other clients know that we've seen this message id in this channel.
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="messageId">Message id.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns></returns>
+        Task AcknowledgeMessageAsync(string channelId, string messageId, CancellationToken cancellationToken = default);
+
         #endregion
 
         #region Voice
