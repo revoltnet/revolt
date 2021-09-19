@@ -13,6 +13,11 @@ namespace Revolt.Models.Channels.Messaging
         /// <summary>
         /// Oldest
         /// </summary>
-        Oldest
+        Oldest,
+        
+        /// <summary>
+        /// Relevance.
+        /// </summary>
+        Relevance
     }
 }
