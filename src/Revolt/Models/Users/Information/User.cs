@@ -42,7 +42,7 @@ namespace Revolt.Models.Users.Information
         ///     Bitfield of user's badges.
         /// </summary>
         [JsonPropertyName("badges")]
-        public long? Badges { get; init; }
+        public EBadges Badges { get; init; }
 
         /// <summary>
         ///     User status.
@@ -69,7 +69,7 @@ namespace Revolt.Models.Users.Information
         ///     User flags.
         /// </summary>
         [JsonPropertyName("flags")]
-        public long? Flags { get; init; }
+        public EFlags Flags { get; init; }
 
         /// <summary>
         ///     Bot information.
@@ -80,6 +80,11 @@ namespace Revolt.Models.Users.Information
         [JsonPropertyName("bot")]
         public BotInformation? Bot { get; init; }
 
+        /// <summary>
+        /// Whether the fetched user is a bot or not.
+        /// </summary>
+        public bool IsBot => Bot is not null;
+        
         /// <summary>
         ///     Bot information.
         /// </summary>
