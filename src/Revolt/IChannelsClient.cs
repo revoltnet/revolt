@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Revolt.Models.Channels.Groups;
@@ -5,6 +7,7 @@ using Revolt.Models.Channels.Information;
 using Revolt.Models.Channels.Messaging;
 using Revolt.Models.Channels.Voice;
 using Revolt.Models.Users.DirectMessaging;
+using Revolt.Models.Users.Information;
 
 namespace Revolt
 {
@@ -86,12 +89,92 @@ namespace Revolt
         /// Channel must be a <see cref="Group"/>, a <see cref="TextChannel"/> or a <see cref="VoiceChannel"/>.
         /// </para>
         /// </summary>
-        /// <param name="channelId"></param>
-        /// <param name="permissions"></param>
-        /// <param name="cancellationToken"></param>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="permissions">TODO</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
         /// <returns></returns>
         Task SetDefaultPermissionAsync(string channelId, int permissions, CancellationToken cancellationToken = default);
 
+        #endregion
+
+        #region Messaging
+
+        /// <summary>
+        /// Sends a message to the given channel.
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="content">
+        /// Message content to send.
+        /// <para>
+        /// [ 0 .. 2000 ] characters.
+        /// </para>
+        /// </param>
+        /// <param name="attachments">Attachments to include in message.</param>
+        /// <param name="replies">
+        /// Messages to reply to.
+        /// <para>
+        /// "mention" means whether this reply should mention the message's author.
+        /// </para>
+        /// </param>
+        /// <param name="nonce">
+        /// Nonce value, prefer to use GUIDs here for better feature support.
+        /// Used to prevent double requests to create objects.
+        /// <para>
+        /// [ 1 .. 36 ] characters.
+        /// </para>
+        /// </param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns>The sent <see cref="Message"/></returns>
+        Task<Message> SendMessageAsync(string channelId, string content, IEnumerable<string>? attachments,
+            IEnumerable<(string messageId, bool mention)>? replies, string? nonce = default, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Fetches multiple messages.
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="limit">
+        /// Maximum number of messages to fetch.
+        /// For fetching nearby messages, this is (limit + 1).
+        /// <para>
+        /// [ 1 .. 100 ]
+        /// </para>
+        /// </param>
+        /// <param name="before">Message id before which messages should be fetched.</param>
+        /// <param name="after">Message id after which messages should be fetched.</param>
+        /// <param name="sort">Message sort direction.</param>
+        /// <param name="nearby">Message id to fetch around, this will ignore 'before', 'after' and 'sort' options.
+        /// Limits in each direction will be half of the specified limit.
+        /// It also fetches the specified message ID.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns>A collection of <see cref="Message"/>.</returns>
+        Task<IEnumerable<Message>> FetchMessages(string channelId, int limit, string before, string after, ESort sort, string nearby,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Fetches multiple messages and includes any related users (and members in channels).
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="limit">
+        /// Maximum number of messages to fetch.
+        /// For fetching nearby messages, this is (limit + 1).
+        /// <para>
+        /// [ 1 .. 100 ]
+        /// </para>
+        /// </param>
+        /// <param name="before">Message id before which messages should be fetched.</param>
+        /// <param name="after">Message id after which messages should be fetched.</param>
+        /// <param name="sort">Message sort direction.</param>
+        /// <param name="nearby">Message id to fetch around, this will ignore 'before', 'after' and 'sort' options.
+        /// Limits in each direction will be half of the specified limit.
+        /// It also fetches the specified message ID.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns>
+        /// A tuple containing a collection of <see cref="Message"/>, a collection of <see cref="User"/>,
+        /// and in some cases a collection of <see cref="Member"/>.
+        /// </returns>
+        Task<(IEnumerable<Message> messages, IEnumerable<User> users, IEnumerable<Member>? members)> FetchMessagesWithUsers(string channelId, int limit, string before, string after, ESort sort, string nearby, 
+            CancellationToken cancellationToken = default);
+        
         #endregion
     }
 }
