@@ -147,7 +147,7 @@ namespace Revolt
         /// It also fetches the specified message ID.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
         /// <returns>A collection of <see cref="Message"/>.</returns>
-        Task<IEnumerable<Message>> FetchMessages(string channelId, int limit, string before, string after, ESort sort, string nearby,
+        Task<IEnumerable<Message>> FetchMessagesAsync(string channelId, int limit, string before, string after, ESort sort, string nearby,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -172,9 +172,21 @@ namespace Revolt
         /// A tuple containing a collection of <see cref="Message"/>, a collection of <see cref="User"/>,
         /// and in some cases a collection of <see cref="Member"/>.
         /// </returns>
-        Task<(IEnumerable<Message> messages, IEnumerable<User> users, IEnumerable<Member>? members)> FetchMessagesWithUsers(string channelId, int limit, string before, string after, ESort sort, string nearby, 
-            CancellationToken cancellationToken = default);
+        Task<(IEnumerable<Message> messages, IEnumerable<User> users, IEnumerable<Member>? members)> FetchMessagesWithUsersAsync(string channelId, 
+            int limit, string before, string after, ESort sort, string nearby, CancellationToken cancellationToken = default);
         
+        #endregion
+
+        #region Voice
+
+        /// <summary>
+        /// Asks the voice server for a token to join the call.
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns>A Voso token.</returns>
+        Task<string> JoinCallAsync(string channelId, CancellationToken cancellationToken = default);
+
         #endregion
     }
 }
