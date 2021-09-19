@@ -279,6 +279,69 @@ namespace Revolt
 
         #endregion
 
+        #region Groups
+
+        /// <summary>
+        /// Create a new group with friends.
+        /// </summary>
+        /// <param name="name">
+        /// Group name.
+        /// <para>
+        /// [ 1 .. 32 ] characters.
+        /// </para>
+        /// </param>
+        /// <param name="description">
+        /// Group description.
+        /// <para>
+        /// [ 1 .. 1024 ] characters.
+        /// </para>
+        /// </param>
+        /// <param name="users">
+        /// Collection of user ids to add to the group. Must be friends with them.
+        /// <para>
+        /// ≤ 49 users.
+        /// </para>
+        /// </param>
+        /// <param name="nsfw">Whether this group is not safe for work.</param>
+        /// <param name="nonce">
+        /// Nonce value, prefer to use GUIDs here for better feature support.
+        /// Used to prevent double requests to create objects.
+        /// <para>
+        /// [ 1 .. 36 ] characters.
+        /// </para>
+        /// </param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns>An instance of the newly <see cref="Group"/>.</returns>
+        Task<Group> CreateGroupAsync(string name, string? description, IEnumerable<string>? users, bool nsfw, string? nonce = default,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Retrieves users who are part of this group.
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>A collection of <see cref="User"/>.</returns>
+        Task<IEnumerable<User>> FetchGroupMembersAsync(string channelId, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Adds another user to the group.
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="userId">Id of the user to add. Must be friends with them.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns></returns>
+        Task AddGroupMemberAsync(string channelId, string userId, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Removes a user from the group.
+        /// </summary>
+        /// <param name="channelId">Channel id.</param>
+        /// <param name="userId">Id of the user to remove.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/>.</param>
+        /// <returns></returns>
+        Task RemoveGroupMemberAsync(string channelId, string userId, CancellationToken cancellationToken = default);
+
+        #endregion
+        
         #region Voice
 
         /// <summary>
