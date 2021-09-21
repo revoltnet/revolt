@@ -24,5 +24,15 @@ namespace Revolt.Options
         ///     Endpoint for the Revolt API.
         /// </summary>
         public Uri Endpoint { get; set; }
+        
+        /// <summary>
+        ///     Session Token.
+        /// </summary>
+        public string? SessionToken { get; set; }
+        
+        /// <summary>
+        ///     Bot Token.
+        /// </summary>
+        public string? BotToken { get; set; }
     }
 }
