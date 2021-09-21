@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Revolt.Models.Auth;
 using Revolt.Models.Channels.Information;
@@ -27,10 +28,16 @@ namespace Revolt
         public readonly RevoltOptions Options;
 
         /// <summary>
+        ///     <see cref="HttpClient" />.
+        /// </summary>
+        protected HttpClient Client { get; }
+        
+        /// <summary>
         /// Default constructor.
         /// </summary>
         /// <param name="options"></param>
         /// <param name="client"></param>
+        [ActivatorUtilitiesConstructor]
         public RevoltClient(IOptions<RevoltOptions> options, HttpClient client)
         {
             Options = options.Value;
@@ -40,9 +47,32 @@ namespace Revolt
         }
 
         /// <summary>
-        ///     <see cref="HttpClient" />.
+        /// Constructor for custom scenarios.
         /// </summary>
-        protected HttpClient Client { get; }
+        /// <param name="options"></param>
+        /// <param name="client"></param>
+        public RevoltClient(RevoltOptions options, HttpClient? client = default)
+        {
+            Options = options;
+            Client = client ?? new HttpClient();
+
+            Client.BaseAddress = Options.Endpoint;
+        }
+        
+        
+        /// <summary>
+        /// Alternative constructor for custom scenarios.
+        /// </summary>
+        /// <param name="optionsAction"></param>
+        /// <param name="client"></param>
+        public RevoltClient(Action<RevoltOptions> optionsAction, HttpClient? client = default)
+        {
+            Options = new RevoltOptions();
+            optionsAction.Invoke(Options);
+            
+            Client = client ?? new HttpClient();
+            Client.BaseAddress = Options.Endpoint;
+        }
 
         protected HttpRequestMessage GenerateRequest<TPayload>(HttpMethod method, EAuth auth, string? uri = default,
             TPayload? content = default)
