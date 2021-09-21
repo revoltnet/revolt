@@ -39,7 +39,10 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<bool> CheckOnboardingStatusAsync(CancellationToken cancellationToken = default)
         {
-            var response = await Client.GetAsync("onboard/hello", cancellationToken).ConfigureAwait(false);
+            
+            var request = GenerateRequest(HttpMethod.Get, EAuth.Session, "onboard/hello");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -60,12 +63,12 @@ namespace Revolt
         /// <inheritdoc />
         public async Task CompleteOnboardingAsync(string username, CancellationToken cancellationToken = default)
         {
-            var payload = GeneratePayload(new
+            var request = GenerateRequest(HttpMethod.Post, EAuth.Session, "onboard/complete", new
             {
                 username
             });
 
-            var response = await Client.PostAsync("onboard/complete", payload, cancellationToken).ConfigureAwait(false);
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
