@@ -34,5 +34,13 @@ namespace Revolt.Options
         ///     Bot Token.
         /// </summary>
         public string? BotToken { get; set; }
+        
+        /// <summary>
+        ///     Whether to prioritize bot authentication over session authentication.
+        ///     <remarks>
+        ///         Useful when both tokens are provided but the use case is primarily bot-like.
+        ///     </remarks> 
+        /// </summary>
+        public bool PreferBotAuthentication { get; set; }
     }
 }

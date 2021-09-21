@@ -76,11 +76,17 @@ namespace Revolt
 
             switch (auth)
             {
+                case EAuth.Priority:
+                    if (Options.PreferBotAuthentication is true)
+                        UseBotAuthentication();
+                    else
+                        UseSessionAuthentication();
+                    break;
                 case EAuth.Session:
-                    request.Headers.Add("x-session-token", Options.SessionToken);
+                    UseSessionAuthentication();
                     break;
                 case EAuth.Bot:
-                    request.Headers.Add("x-bot-token", Options.BotToken);
+                    UseBotAuthentication();
                     break;
                 case EAuth.None:
                 default:
@@ -88,6 +94,16 @@ namespace Revolt
             }
 
             return request;
+
+            void UseSessionAuthentication()
+            {
+                request.Headers.Add("x-session-token", Options.SessionToken);
+            }
+
+            void UseBotAuthentication()
+            {
+                request.Headers.Add("x-bot-token", Options.BotToken);
+            }
         }
         
         /// <summary>
@@ -108,7 +124,15 @@ namespace Revolt
             /// <summary>
             /// Bot. Bot token required.
             /// </summary>
-            Bot
+            Bot,
+            
+            /// <summary>
+            /// Priority. Depends on configured priority.
+            /// <remarks>
+            /// Defaults to session authentication.
+            /// </remarks>
+            /// </summary>
+            Priority
         }
     }
 }
