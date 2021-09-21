@@ -23,7 +23,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<User> FetchUserAsync(string userId, CancellationToken cancellationToken = default)
         {
-            var response = await Client.GetAsync($"users/{userId}", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Get, EAuth.Priority, $"users/{userId}");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -43,7 +45,7 @@ namespace Revolt
         public async Task EditUserAsync(Status? status, Profile? profile, string? avatarId, ERemovableUserInformation? remove,
             CancellationToken cancellationToken = default)
         {
-            var payload = GeneratePayload(new
+            var request = GenerateRequest(HttpMethod.Patch, EAuth.Priority, $"users/@me", new
             {
                 status,
                 profile,
@@ -51,7 +53,7 @@ namespace Revolt
                 remove = remove.ToString()
             });
 
-            var response = await Client.PatchAsync("users/@me", payload, cancellationToken).ConfigureAwait(false);
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -66,14 +68,14 @@ namespace Revolt
         /// <inheritdoc />
         public async Task ChangeUsernameAsync(string newUsername, string password, CancellationToken cancellationToken = default)
         {
-            var payload = GeneratePayload(new
+            var request = GenerateRequest(HttpMethod.Patch, EAuth.Session, $"users/@me/username", new
             {
                 username = newUsername,
                 password
             });
 
-            var response = await Client.PatchAsync("users/@me/username", payload, cancellationToken).ConfigureAwait(false);
-
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            
             try
             {
                 response.EnsureSuccessStatusCode();
@@ -87,7 +89,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<Profile> FetchUserProfileAsync(string userId, CancellationToken cancellationToken = default)
         {
-            var response = await Client.GetAsync($"users/{userId}/profile", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Get, EAuth.Priority, $"users/{userId}/profile");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -106,7 +110,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<Stream> FetchDefaultAvatarAsync(string userId, CancellationToken cancellationToken = default)
         {
-            var response = await Client.GetAsync($"users/{userId}/default_avatar", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Get, EAuth.None, $"users/{userId}/default_avatar");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -125,7 +131,10 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<IEnumerable<string>> FetchMutualFriendsAsync(string userId, CancellationToken cancellationToken = default)
         {
-            var response = await Client.GetAsync($"users/{userId}/mutual", cancellationToken).ConfigureAwait(false);
+            
+            var request = GenerateRequest(HttpMethod.Get, EAuth.Priority, $"users/{userId}/mutual");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -149,7 +158,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<IEnumerable<IChannel>> FetchDirectMessageChannelsAsync(CancellationToken cancellationToken = default)
         {
-            var response = await Client.GetAsync($"users/dms", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Get, EAuth.Priority, $"users/dms");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -193,7 +204,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<DirectMessage> OpenDirectMessageAsync(string userId, CancellationToken cancellationToken = default)
         {
-            var response = await Client.GetAsync($"users/{userId}/dm", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Get, EAuth.Priority, $"users/{userId}/dm");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -216,7 +229,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<IEnumerable<Relationship>> FetchAllRelationshipsAsync(CancellationToken cancellationToken = default)
         {
-            var response = await Client.GetAsync("users/relationships", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Get, EAuth.Session, "users/relationships");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -236,7 +251,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<Relationship> FetchRelationshipAsync(string userId, CancellationToken cancellationToken = default)
         {
-            var response = await Client.GetAsync($"users/{userId}/relationships", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Get, EAuth.Session, $"users/{userId}/relationships");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -256,7 +273,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<ERelationship> SendFriendRequestAsync(string username, CancellationToken cancellationToken = default)
         {
-            var response = await Client.PutAsync($"users/{username}/friend", null!, cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Put, EAuth.Session, $"users/{username}/friend");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -284,7 +303,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<ERelationship> DenyFriendRequestAsync(string username, CancellationToken cancellationToken = default)
         {
-            var response = await Client.DeleteAsync($"users/{username}/friend", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Delete, EAuth.Session, $"users/{username}/friend");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -312,7 +333,10 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<ERelationship> BlockUserAsync(string userId, CancellationToken cancellationToken = default)
         {
-            var response = await Client.PutAsync($"users/{userId}/block", null!, cancellationToken).ConfigureAwait(false);
+            
+            var request = GenerateRequest(HttpMethod.Put, EAuth.Session, $"users/{userId}/block");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -334,7 +358,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<ERelationship> UnblockUserAsync(string userId, CancellationToken cancellationToken = default)
         {
-            var response = await Client.DeleteAsync($"users/{userId}/friend", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Delete, EAuth.Session, $"users/{userId}/friend");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
