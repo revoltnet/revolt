@@ -18,7 +18,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<Account> FetchAccountAsync(CancellationToken cancellationToken = default)
         {
-            var response = await Client.GetAsync("auth/account", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Get, EAuth.Session, "auth/account");
+            
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -35,17 +37,17 @@ namespace Revolt
         }
 
         /// <inheritdoc />
-        public async Task<string> CreateAccountAsync(string email, string password, string invite, string captcha, CancellationToken cancellationToken = default)
+        public async Task<string> CreateAccountAsync(string email, string password, string? invite, string? captcha, CancellationToken cancellationToken = default)
         {
-            var payload = GeneratePayload(new
+            var request = GenerateRequest(HttpMethod.Post, EAuth.None, "auth/account/create", new
             {
                 email,
                 password,
                 invite,
                 captcha
             });
-
-            var response = await Client.PostAsync("auth/account/create", payload, cancellationToken).ConfigureAwait(false);
+            
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -67,13 +69,13 @@ namespace Revolt
         /// <inheritdoc />
         public async Task ResendVerificationAsync(string email, string captcha, CancellationToken cancellationToken = default)
         {
-            var payload = GeneratePayload(new
+            var request = GenerateRequest(HttpMethod.Post, EAuth.None, "auth/account/reverify", new
             {
                 email,
                 captcha
             });
-
-            var response = await Client.PostAsync("auth/account/reverify", payload, cancellationToken).ConfigureAwait(false);
+            
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -88,7 +90,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task VerifyEmailAsync(string code, CancellationToken cancellationToken = default)
         {
-            var response = await Client.PostAsync($"auth/account/verify/{code}", null!, cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Post, EAuth.None, $"auth/account/verify/{code}");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -103,13 +107,13 @@ namespace Revolt
         /// <inheritdoc />
         public async Task SendPasswordResetAsync(string email, string captcha, CancellationToken cancellationToken = default)
         {
-            var payload = GeneratePayload(new
+            var request = GenerateRequest(HttpMethod.Post, EAuth.None, "auth/account/reset_password", new
             {
                 email,
                 captcha
             });
-
-            var response = await Client.PostAsync("auth/account/reset_password", payload, cancellationToken).ConfigureAwait(false);
+            
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -124,13 +128,13 @@ namespace Revolt
         /// <inheritdoc />
         public async Task PasswordResetAsync(string newPassword, string token, CancellationToken cancellationToken = default)
         {
-            var payload = GeneratePayload(new
+            var request = GenerateRequest(HttpMethod.Patch, EAuth.None, "auth/account/reset_password", new
             {
                 password = newPassword,
                 token
             });
-
-            var response = await Client.PatchAsync("auth/account/reset_password", payload, cancellationToken).ConfigureAwait(false);
+            
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -145,13 +149,13 @@ namespace Revolt
         /// <inheritdoc />
         public async Task ChangePasswordAsync(string oldPassword, string newPassword, CancellationToken cancellationToken = default)
         {
-            var payload = GeneratePayload(new
+            var request = GenerateRequest(HttpMethod.Patch, EAuth.Session, "auth/account/change/password", new
             {
                 password = oldPassword,
                 new_password = newPassword
             });
-
-            var response = await Client.PatchAsync("auth/account/change/password", payload, cancellationToken).ConfigureAwait(false);
+            
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -166,13 +170,13 @@ namespace Revolt
         /// <inheritdoc />
         public async Task ChangeEmailAsync(string password, string newEmail, CancellationToken cancellationToken = default)
         {
-            var payload = GeneratePayload(new
+            var request = GenerateRequest(HttpMethod.Patch, EAuth.Session, "auth/account/change/email", new
             {
                 password,
                 new_email = newEmail
             });
-
-            var response = await Client.PatchAsync("auth/account/change/email", payload, cancellationToken).ConfigureAwait(false);
+            
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -191,15 +195,15 @@ namespace Revolt
         /// <inheritdoc />
         public async Task<Session> LoginAsync(string email, string password, string deviceName, string captcha, CancellationToken cancellationToken = default)
         {
-            var payload = GeneratePayload(new
+            var request = GenerateRequest(HttpMethod.Post, EAuth.None, "auth/login", new
             {
                 email,
                 password,
                 device_name = deviceName,
                 captcha
             });
-
-            var response = await Client.PostAsync("auth/login", payload, cancellationToken).ConfigureAwait(false);
+            
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -218,7 +222,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task LogoutAsync(CancellationToken cancellationToken)
         {
-            var response = await Client.GetAsync("auth/logout", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Get, EAuth.Session, $"auth/logout");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -233,13 +239,13 @@ namespace Revolt
         /// <inheritdoc />
         public async Task EditSessionAsync(string sessionId, string friendlyName, CancellationToken cancellationToken = default)
         {
-            var payload = GeneratePayload(new
+            var request = GenerateRequest(HttpMethod.Post, EAuth.Session, $"auth/sessions/{sessionId}", new
             {
                 friendly_name = friendlyName
             });
-
-            var response = await Client.PatchAsync($"auth/sessions/{sessionId}", payload, cancellationToken).ConfigureAwait(false);
-
+            
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            
             try
             {
                 response.EnsureSuccessStatusCode();
@@ -249,11 +255,13 @@ namespace Revolt
                 throw new RevoltException(response.ReasonPhrase, e);
             }
         }
-
+        
         /// <inheritdoc />
         public async Task<IEnumerable<Session>> FetchSessionsAsync(CancellationToken cancellationToken = default)
         {
-            var response = await Client.GetAsync("auth/sessions", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Get, EAuth.Session, $"auth/sessions");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -273,7 +281,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task DeleteSessionAsync(string sessionId, CancellationToken cancellationToken = default)
         {
-            var response = await Client.DeleteAsync($"auth/session/{sessionId}", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Delete, EAuth.Session, $"auth/session/{sessionId}");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -288,7 +298,9 @@ namespace Revolt
         /// <inheritdoc />
         public async Task DeleteAllSessions(bool revokeSelf = false, CancellationToken cancellationToken = default)
         {
-            var response = await Client.DeleteAsync($"auth/session/all?revoke_self={revokeSelf}", cancellationToken).ConfigureAwait(false);
+            var request = GenerateRequest(HttpMethod.Delete, EAuth.Session, $"auth/session/all?revoke_self={revokeSelf}");
+
+            var response = await Client.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             try
             {

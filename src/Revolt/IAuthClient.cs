@@ -25,7 +25,7 @@ namespace Revolt
         /// <param name="captcha">Captcha verification code.</param>
         /// <param name="cancellationToken"><see cref="CancellationToken" />.</param>
         /// <returns>The user id of the newly created user.</returns>
-        public Task<string> CreateAccountAsync(string email, string password, string invite, string captcha,
+        public Task<string> CreateAccountAsync(string email, string password, string? invite, string? captcha,
             CancellationToken cancellationToken = default);
 
         /// <summary>
