@@ -44,15 +44,71 @@ namespace Revolt
         /// </summary>
         protected HttpClient Client { get; }
 
-        /// <summary>
-        ///     Generates a valid <see cref="StringContent" /> payload.
-        /// </summary>
-        /// <param name="payload">The object for the body of the payload.</param>
-        /// <typeparam name="T">A valid object.</typeparam>
-        /// <returns>A valid <see cref="StringContent" />.</returns>
-        protected static StringContent GeneratePayload<T>(T payload)
+        protected HttpRequestMessage GenerateRequest<TPayload>(HttpMethod method, EAuth auth, string? uri = default,
+            TPayload? content = default)
         {
-            return new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+            return GenerateRequest(method, auth, uri, GeneratePayload(content));
+            
+            
+            static StringContent? GeneratePayload<T>(T? payload)
+            {
+                return payload is not null
+                    ? new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json")
+                    : default;
+
+            }
+        }
+
+        /// <summary>
+        ///     Generates a request.
+        /// </summary>
+        /// <param name="method"></param>
+        /// <param name="auth"></param>
+        /// <param name="uri"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        protected HttpRequestMessage GenerateRequest(HttpMethod method, EAuth auth, string? uri = default, HttpContent? content = default)
+        {
+            var request = new HttpRequestMessage(method, uri)
+            {
+                Content = content
+            };
+
+            switch (auth)
+            {
+                case EAuth.Session:
+                    request.Headers.Add("x-session-token", Options.SessionToken);
+                    break;
+                case EAuth.Bot:
+                    request.Headers.Add("x-bot-token", Options.BotToken);
+                    break;
+                case EAuth.None:
+                default:
+                    break;
+            }
+
+            return request;
+        }
+        
+        /// <summary>
+        /// Revolt request auth types.
+        /// </summary>
+        protected enum EAuth
+        {
+            /// <summary>
+            /// None. No auth required.
+            /// </summary>
+            None,
+            
+            /// <summary>
+            /// Session. Session token required.
+            /// </summary>
+            Session,
+            
+            /// <summary>
+            /// Bot. Bot token required.
+            /// </summary>
+            Bot
         }
     }
 }
